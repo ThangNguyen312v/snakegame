@@ -1,0 +1,14 @@
+e:\hoctap\snake\bin\Debug\net8.0\snake.exe
+E:\hoctap\snake\bin\Debug\net8.0\snake.deps.json
+E:\hoctap\snake\bin\Debug\net8.0\snake.runtimeconfig.json
+e:\hoctap\snake\bin\Debug\net8.0\snake.dll
+e:\hoctap\snake\bin\Debug\net8.0\snake.pdb
+e:\hoctap\snake\obj\Debug\net8.0\snake.GeneratedMSBuildEditorConfig.editorconfig
+e:\hoctap\snake\obj\Debug\net8.0\snake.AssemblyInfoInputs.cache
+e:\hoctap\snake\obj\Debug\net8.0\snake.AssemblyInfo.cs
+e:\hoctap\snake\obj\Debug\net8.0\snake.csproj.CoreCompileInputs.cache
+e:\hoctap\snake\obj\Debug\net8.0\snake.dll
+e:\hoctap\snake\obj\Debug\net8.0\refint\snake.dll
+e:\hoctap\snake\obj\Debug\net8.0\snake.pdb
+E:\hoctap\snake\obj\Debug\net8.0\snake.genruntimeconfig.cache
+E:\hoctap\snake\obj\Debug\net8.0\ref\snake.dll
