@@ -12,3 +12,4 @@ e:\hoctap\snake\obj\Debug\net8.0\refint\snake.dll
 e:\hoctap\snake\obj\Debug\net8.0\snake.pdb
 E:\hoctap\snake\obj\Debug\net8.0\snake.genruntimeconfig.cache
 E:\hoctap\snake\obj\Debug\net8.0\ref\snake.dll
+E:\hoctap\snake\obj\Debug\net8.0\snake.sourcelink.json

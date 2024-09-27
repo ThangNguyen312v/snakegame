@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace snakeGame{
      public class Point
     {
@@ -11,107 +13,137 @@ namespace snakeGame{
     }
     class snakeCTR
     {
-      public static Point food = new Point(8, 8);
-        public static bool foodExist = false;
-        public static int speed = 500;
-        public static int row = 20;
-        public static int col = 40;
-        public static string direction = "Right";
-        public static int score;
-        public static Point[] body = new Point[1]
+        private Point food = new Point(8, 8);
+        private bool foodExist = false;
+        private int speed = 500;
+        private int row = 20;
+        private int col = 40;
+        private string direction = "Right";
+        private int score;
+        private string[,] broad;
+        private Point[] body = new Point[1]
         {
             new Point(4,4)
         };
-        public static Point _head = new Point(10, 10);
-        public static string[,] board = new string[row, col];
+        private Point head = new Point(10, 10);
 
-        public static void Drawboard()
+        public Point Food { get => food; set => food = value; }
+        public bool FoodExist { get => foodExist; set => foodExist = value; }
+        public int Speed { get => speed; set => speed = value; }
+        public int Row { get => row; set => row = value; }
+        public int Col { get => col; set => col = value; }
+        public string Direction { get => direction; set => direction = value; }
+        public int Score { get => score; set => score = value; }
+        public string[,] Broad { get => broad; set => broad = value; }
+        public Point[] Body { get => body; set => body = value; }
+        public Point Head { get => head; set => head = value; }
+
+        public snakeCTR()
         {
-            for (int i = 0; i < row; i++)
+            string[,] broad = new string[Row, Col];
+        }
+
+        public snakeCTR(Point food, bool foodExist, int speed, int row, int col, string direction, int score, Point _head)
+        {
+            this.Food = food;
+            this.FoodExist = foodExist;
+            this.Speed = speed;
+            this.Row = row;
+            this.Col = col;
+            this.Direction = direction;
+            this.Score = score;
+            this.Head = _head;
+            Broad = new string[Row, Col];
+        }
+
+        public void Drawboard()
+        {
+        
+            for (int i = 0; i < Row; i++)
             {
-                for (int j = 0; j < col; j++)
+                for (int j = 0; j < Col; j++)
                 {
-                    if (i == 0 || i == row - 1 || j == 0 || j == col - 1)
+                    if (i == 0 || i == Row - 1 || j == 0 || j == Col - 1)
                     {
-                        board[i, j] = "#";
+                        Broad[i, j] = "#";
                     }
-                    else if (i == _head.X && j == _head.Y)
+                    else if (i == Head.X && j == Head.Y)
                     {
-                        board[i, j] = "*";
+                        Broad[i, j] = "*";
                     }
                     else
                     {
                         bool isBodyPart = false;
-                        for (int count = 0; count < body.Length; count++)
+                        for (int count = 0; count < Body.Length; count++)
                         {
-                            if (i == body[count].X && j == body[count].Y)
+                            if (i == Body[count].X && j == Body[count].Y)
                             {
-                                board[i, j] = "+";
+                                Broad[i, j] = "+";
                                 isBodyPart = true;
                                 break;
                             }
                         }
                         if (!isBodyPart)
                         {
-                            if (i == food.X && j == food.Y)
+                            if (i == Food.X && j == Food.Y)
                             {
-                                board[i, j] = "@";
+                                Broad[i, j] = "@";
                             }
                             else
                             {
-                                board[i, j] = " ";
+                                Broad[i, j] = " ";
                             }
                         }
                     }
                 }
             }
         }
-         public static void setUpBoard()
+         public void setUpBoard()
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < Row; i++)
             {
-                for (int j = 0; j < col; j++)
+                for (int j = 0; j < Col; j++)
                 {
-                    Console.Write(board[i, j]);
+                    Console.Write(Broad[i, j]);
                 }
                 Console.WriteLine();
             }
         }
-        public static void MoveHead()
+        public void MoveHead()
         {
-            switch(direction)
+            switch(Direction)
             {
                 case"Right":
-                    _head.Y += 1;
-                    if(_head.Y == -1)
+                    Head.Y += 1;
+                    if(Head.Y == -1)
                         {
-                        _head.Y = 1;
+                        Head.Y = 1;
                         }
                 break;
                 case "Left":
-                    _head.Y -= 1;
-                    if (_head.Y == 0)
+                    Head.Y -= 1;
+                    if (Head.Y == 0)
                     {
-                        _head.Y = col - 1;
+                        Head.Y = Col - 1;
                     }
                     break;
                 case "Up":
-                    _head.X -= 1;
-                    if (_head.X == 0)
+                    Head.X -= 1;
+                    if (Head.X == 0)
                     {
-                        _head.X = row - 1;
+                        Head.X = Row - 1;
                     }
                     break;
                 case "Down":
-                    _head.X += 1;
-                    if (_head.X == row - 1)
+                    Head.X += 1;
+                    if (Head.X == Row - 1)
                     {
-                        _head.X = 1;
+                        Head.X = 1;
                     }
                     break;
             }
         }
-          public static void ListenKey()
+          public void ListenKey()
         {
             while (true)
             {
@@ -119,75 +151,123 @@ namespace snakeGame{
                 switch (keyinfo.Key)
                 {
                     case ConsoleKey.RightArrow:
-                        if (direction == "Up" || direction == "Down" || direction == "Left")
+                        if (Direction == "Up" || Direction == "Down" || Direction == "Left")
                         {
-                            direction = "Right";
+                            Direction = "Right";
                         }
                         break;
                     case ConsoleKey.LeftArrow:
-                        if (direction == "Up" || direction == "Down" || direction == "Right")
+                        if (Direction == "Up" || Direction == "Down" || Direction == "Right")
                         {
-                            direction = "Left";
+                            Direction = "Left";
                         }
                         break;
                     case ConsoleKey.UpArrow:
-                        if (direction == "Left" || direction == "Right" || direction == "Down")
+                        if (Direction == "Left" || Direction == "Right" || Direction == "Down")
                         {
-                            direction = "Up";
+                            Direction = "Up";
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (direction == "Left" || direction == "Right" || direction == "Up")
+                        if (Direction == "Left" || Direction == "Right" || Direction == "Up")
                         {
-                            direction = "Down";
+                            Direction = "Down";
                         }
                         break;
                 }
             }
         }
-        public  static void EatFood()
+        public void EatFood()
         {
-            if(_head.X == food.X && _head.Y == food.Y )
+             
+             Point[] newbody = Body;
+            if(Head.X == Food.X && Head.Y == Food.Y )
             {
-                score += 1;
-                Array.Resize(ref body, body.Length + 1);
-                body[body.Length -1] = new Point(-1,-1);
-                speed -= 20;
-                foodExist = false;
+                Score += 1;
+                Array.Resize(ref newbody, newbody.Length + 1);
+                newbody[newbody.Length -1] = new Point(-1,-1);
+                Body = newbody;
+                Speed -= 20;
+                FoodExist = false;
             }
         }
-        public static void SpawnBody()
+        public void SpawnBody()
         {
-            for(int i = body.Length -1; i > 0; i--)
+            for(int i = Body.Length -1; i > 0; i--)
             {
-                body[i].X = body[i-1].X;
-                body[i].Y = body[i-1].Y;
+                Body[i].X = Body[i-1].X;
+                Body[i].Y = Body[i-1].Y;
             }
-            if(body.Length > 0)
+            if(Body.Length > 0)
             {
-                body[0].X = _head.X;
-                body[0].Y = _head.Y;
+                Body[0].X = Head.X;
+                Body[0].Y = Head.Y;
             }
         }
-        public static void PopupFood()
+        public void PopupFood()
         {
             Random random = new Random();
-            int x = random.Next(1, row -1);
-            int y = random.Next(1, col - 1);
-            if(x != _head.X && y != _head.Y)
+            int x = random.Next(1, Row -1);
+            int y = random.Next(1, Col - 1);
+            if(x != Head.X && y != Head.Y)
             {
-                if(foodExist == false)
+                if(FoodExist == false)
                 {
-                     food.X = x;
-                    food.Y = y;
-                    foodExist = true;
+                     Food.X = x;
+                    Food.Y = y;
+                    FoodExist = true;
 
                 }
             }
         }
-        public static void ShowPoint()
+        public bool checkDead(bool dead)
         {
-            Console.WriteLine($"score: {score}");
+             if(Head.Y == Col - 1 || Head.Y <= 0 || Head.X <= 0 || Head.X == Row - 1 )
+             {
+                 Console.WriteLine("Game Over");
+                return true;
+             }
+             return false;
+        }
+        public bool Stopgame()
+        {
+         ConsoleKeyInfo keyinfo = Console.ReadKey();
+         
+         switch(keyinfo.Key)
+         {
+            case ConsoleKey.Escape:
+            return true;
+         }
+         return false;
+        }
+        public void ShowPoint()
+        {
+            Console.WriteLine($"score: {Score}");
+        }
+
+        public void savePoint()
+        {
+            string saveP = @"E:\hoctap\snake\Point.csv";
+            using(StreamWriter save = new StreamWriter(saveP))
+            {
+                save.Write($"so diem trong vong truoc la: {Score}");
+            }
+        }
+        public int LoadScore()
+        {
+            string saveP = @"E:\hoctap\snake\Point.csv";
+            int diem;
+            if(File.Exists(saveP))
+            {
+                using(StreamReader readscore = new StreamReader(saveP))
+                {
+                    if(int.TryParse(readscore.ReadLine(),out diem))
+                    {
+                        return diem;
+                    }
+                }
+            }
+            return  0;
         }
     }
 }
